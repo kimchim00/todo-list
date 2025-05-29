@@ -28,23 +28,8 @@ A full-featured and responsive To-Do List application built using **React + Vite
 - [Uvicorn](https://www.uvicorn.org/) for ASGI server
 
 ### DevOps
-- [Docker](https://www.docker.com/)
+
 - [NGINX](https://nginx.org/) for reverse proxy
-
-## 📁 Project Structure
-
-
-
-todo-list/
-├── frontend/         # React + Vite Frontend
-├── backend/          # FastAPI Backend
-│   ├── src/          # API source code
-│   ├── requirements.txt
-│   └── pyproject.toml
-├── nginx/            # NGINX Configuration
-└── .env              # Environment Variables
-
-
 
 ## ⚙️ Getting Started
 
