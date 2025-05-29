@@ -31,36 +31,51 @@ A full-featured and responsive To-Do List application built using **React + Vite
 
 - [NGINX](https://nginx.org/) for reverse proxy
 
+## 📁 Project Structure
+
+```
+
+todo-list/
+├── frontend/         # React + Vite Frontend
+├── backend/          # FastAPI Backend
+│   ├── src/          # API source code
+│   ├── requirements.txt
+│   └── pyproject.toml
+├── nginx/            # NGINX Configuration
+└── .env              # Environment Variables
+
+````
+
 ## ⚙️ Getting Started
 
 ### Prerequisites
 - Node.js & npm
 - Python 3.10+
 - MongoDB running locally or remotely
-- Docker (optional for deployment)
+
 
 ### 1. Setup the Backend (FastAPI)
 
-bash
+```bash
 cd backend
 pip install -r requirements.txt
 uvicorn src.main:app --reload
-
+````
 
 Make sure your `.env` file contains a valid MongoDB URI, e.g.:
 
-env
+```env
 MONGODB_URI=mongodb://localhost:27017
 DB_NAME=todo_app
-
+```
 
 ### 2. Setup the Frontend (React + Vite)
 
-bash
+```bash
 cd frontend
 npm install
 npm run dev
-
+```
 
 The app will run at: [http://localhost:5173](http://localhost:5173)
 
@@ -68,10 +83,10 @@ The app will run at: [http://localhost:5173](http://localhost:5173)
 
 Make sure to configure your `.env` file for proper backend connectivity.
 
-
+```
 MONGODB_URI=mongodb://localhost:27017
 DB_NAME=todo_app
-
+```
 
 ## 📄 License
 
@@ -80,4 +95,5 @@ This project is open-source and available under the [MIT License](LICENSE).
 ---
 
 Feel free to contribute or fork this repo for your own needs!
+
 
