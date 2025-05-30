@@ -5,6 +5,7 @@ import sys
 
 from bson import ObjectId
 from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel
 import uvicorn
@@ -39,6 +40,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, debug=DEBUG)
+
+# اضافه کردن Middleware مربوط به CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5174"],  # آدرس فرانت‌اند (مثلاً Vite روی پورت 5174)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/api/lists")

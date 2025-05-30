@@ -1,46 +1,138 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import styled, { css } from "styled-components";
 
-const ToDoList = ({ todoList, onToggleCheck, onRemoveTodo, goBack }) => {
-  if (!todoList) return <div className="p-4 text-center text-lg">Loading...</div>;
+const Container = styled.div`
+  padding: 1rem;
+  margin: 1rem;
+`;
+
+const BackButton = styled.button`
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #e5e7eb;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #d1d5db;
+  }
+`;
+
+const Title = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+`;
+
+const InputGroup = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Input = styled.input`
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.375rem;
+`;
+
+const AddButton = styled.button`
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+`;
+
+const TodoItem = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.375rem;
+  background-color: #f9fafb;
+  cursor: pointer;
+
+  ${(props) =>
+    props.checked &&
+    css`
+      text-decoration: line-through;
+      color: #9ca3af;
+    `}
+`;
+
+const Checkbox = styled.input`
+  margin-right: 0.5rem;
+`;
+
+const TodoText = styled.span`
+  flex-grow: 1;
+`;
+
+const TrashIcon = styled(FaTrash)`
+  color: #ef4444;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #b91c1c;
+  }
+`;
+
+const ToDoList = ({ todoList, onAddItem, onToggleCheck, onRemoveTodo, goBack }) => {
+  const [newItemText, setNewItemText] = useState("");
+
+  const handleAddItem = () => {
+    if (!newItemText.trim()) return;
+    onAddItem(todoList.id, newItemText.trim());
+    setNewItemText("");
+  };
+
+  if (!todoList) {
+    return <Container>Loading...</Container>;
+  }
 
   return (
-    <div className="p-4 space-y-4">
-      <button
-        className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-        onClick={goBack}
-      >
-        Back
-      </button>
+    <Container>
+      <BackButton onClick={goBack}>Back</BackButton>
+      <Title>{todoList.name || "Untitled List"}</Title>
 
-      <div className="bg-gray-100 p-4 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">{todoList.name}</h2>
-        {todoList.items.map((item, index) => (
-          <div
-            key={index}
-            className={`flex items-center border p-4 m-4 cursor-pointer ${
-              item.checked ? "line-through text-gray-400" : ""
-            }`}
-            onClick={() => onToggleCheck(index)}
-          >
-            <input
+      <InputGroup>
+        <Input
+          type="text"
+          value={newItemText}
+          onChange={(e) => setNewItemText(e.target.value)}
+          placeholder="New item"
+        />
+        <AddButton onClick={handleAddItem}>Add</AddButton>
+      </InputGroup>
+
+      {Array.isArray(todoList.items) && todoList.items.length > 0 ? (
+        todoList.items.map((item) => (
+          <TodoItem key={item.id} checked={item.checked}>
+            <Checkbox
               type="checkbox"
               checked={item.checked}
-              readOnly
-              className="mr-2"
+              onChange={() => onToggleCheck(item.id, !item.checked)}
             />
-            <span className="flex-grow">{item.name}</span>
-            <FaTrash
-              className="text-red-500 hover:text-red-700 ml-4 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                onRemoveTodo(index);
-              }}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
+            <TodoText>{item.label}</TodoText>
+            <TrashIcon onClick={() => onRemoveTodo(item.id)} />
+          </TodoItem>
+        ))
+      ) : (
+        <p>No items found.</p>
+      )}
+    </Container>
   );
 };
 
